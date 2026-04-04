@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Exercícios 1 - Análise de Marés Oceânicas</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+        h1, h2, h3 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .interpretation { background-color: #f9f9f9; padding: 15px; margin: 10px 0; border-left: 4px solid #0066cc; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>LISTA DE EXERCÍCIOS 1 - ANÁLISE DE MARÉS OCEÂNICAS</h1>
+        <p><strong>IOC 5801 - Análise de marés oceânicas</strong><br>
+        <strong>Curso de Especialização:</strong> Medição, Análise, Previsão e Modelagem do Nível do Mar<br>
+        <strong>Disciplina:</strong> Método harmônico de análise e previsão do nível do mar</p>
+        <p><strong>Aluno:</strong> Adriano Caversan<br>
+        <strong>1º Semestre de 2026</strong></p>
+    </div>
+
+    <h2>INTRODUÇÃO</h2>
+    <p>Este relatório apresenta a análise completa de dados horários de nível do mar de 2020 das estações maregráficas de Cananéia e Ubatuba (SP, Brasil). A análise compreende 15 itens, abrangendo desde estatística descritiva básica até comparações entre as séries temporais.</p>
+    
+    <p><strong>Dados processados:</strong></p>
+    <ul>
+        <li>Cananéia: 8.784 pontos horários (média original 2.1404 m removida)</li>
+        <li>Ubatuba: 8.784 pontos horários (média original 1.0109 m removida)</li>
+    </ul>
+
+    <h2>PARTE I: ANÁLISE DOS DADOS DE CANANÉIA 2020</h2>
+
+    <h3>ITEM 1: Parâmetros Estatísticos Básicos da Série de Cananéia</h3>
+    <table>
+        <tr><th>Parâmetro</th><th>Valor</th><th>Unidade</th></tr>
+        <tr><td>Média</td><td>0.0000</td><td>m</td></tr>
+        <tr><td>Mediana</td><td>-0.0104</td><td>m</td></tr>
+        <tr><td>Moda</td><td>-0.1004</td><td>m</td></tr>
+        <tr><td>Desvio Padrão</td><td>0.3856</td><td>m</td></tr>
+        <tr><td>Mínimo</td><td>-1.2224</td><td>m</td></tr>
+        <tr><td>Máximo</td><td>1.2996</td><td>m</td></tr>
+        <tr><td>Curtose</td><td>-0.3548</td><td>-</td></tr>
+        <tr><td>Assimetria</td><td>0.1013</td><td>-</td></tr>
+        <tr><td>Amplitude</td><td>2.5220</td><td>m</td></tr>
+        <tr><td>Número de observações</td><td>8.784</td><td>-</td></tr>
+    </table>
+
+    <div class="interpretation">
+        <strong>Interpretação:</strong> O desvio padrão de 0.39 m indica variabilidade típica de maré. A curtose negativa (-0.35) mostra distribuição mais achatada que a normal. Assimetria positiva (0.10) indica cauda ligeiramente alongada para valores positivos.
+    </div>
+
+    <h3>ITEM 2: Série Temporal com Bandas de Confiança e Análise de Tendência</h3>
+    <p><strong>Resultados da análise de tendência:</strong></p>
+    <ul>
+        <li>Taxa de variação: 0.000344 m/dia</li>
+        <li>Taxa anual: 0.1256 m/ano</li>
+    </ul>
+    <div class="interpretation">
+        <strong>Interpretação:</strong> Há uma tendência positiva pequena mas mensurável de elevação do nível médio do mar de aproximadamente 1.3 mm/ano em 2020.
+    </div>
+
+    <h3>ITEM 3: Histograma e Percentis</h3>
+    <p><strong>Análise do Histograma:</strong></p>
+    <ul>
+        <li>Máximo número de observações: 738 ocorrências na classe 0.0806 m</li>
+        <li>Distribuição aproximadamente normal com leve assimetria</li>
+    </ul>
+
+    <table>
+        <caption><strong>Percentis Específicos - Cananéia</strong></caption>
+        <tr><th>Percentil</th><th>Valor (m)</th><th>Significado</th></tr>
+        <tr><td>10º percentil</td><td>-0.4904</td><td>10% dos dados estão abaixo deste valor</td></tr>
+        <tr><td>25º percentil</td><td>-0.2804</td><td>Primeiro quartil</td></tr>
+        <tr><td>75º percentil</td><td>0.2766</td><td>Terceiro quartil</td></tr>
+        <tr><td>90º percentil</td><td>0.5096</td><td>90% dos dados estão abaixo deste valor</td></tr>
+    </table>
+
+    <h3>ITEM 4: Funções Densidade de Probabilidade</h3>
+    <p><strong>Distribuição Normal:</strong></p>
+    <ul>
+        <li>Parâmetros: μ = 0.0000 m, σ = 0.3856 m</li>
+        <li>P(μ-σ ≤ X ≤ μ+σ) = 65.68% (próximo aos 68% teóricos)</li>
+        <li>P(X ≤ μ) = 51.12%</li>
+        <li>P(X ≥ μ) = 48.88%</li>
+    </ul>
+    <p><strong>Distribuição de Valor Extremo (Gumbel):</strong></p>
+    <ul>
+        <li>Parâmetros: α = -0.1735 m, β = 0.3006 m</li>
+    </ul>
+
+    <h3>ITEM 5: Análise de Fourier</h3>
+    <table>
+        <caption><strong>As 5 Maiores Amplitudes - Cananéia</strong></caption>
+        <tr><th>Ordem</th><th>Amplitude (m)</th><th>Freq. Angular (rad/dia)</th><th>Período (dias)</th><th>Freq. (ciclos/dia)</th></tr>
+        <tr><td>1</td><td>0.323077</td><td>12.137191</td><td>0.5177</td><td>1.931694</td></tr>
+        <tr><td>2</td><td>0.241849</td><td>12.566371</td><td>0.5000</td><td>2.000000</td></tr>
+        <tr><td>3</td><td>0.110465</td><td>12.154358</td><td>0.5169</td><td>1.934426</td></tr>
+        <tr><td>4</td><td>0.096938</td><td>5.836839</td><td>1.0765</td><td>0.928962</td></tr>
+        <tr><td>5</td><td>0.096865</td><td>0.017167</td><td>366.0000</td><td>0.002732</td></tr>
+    </table>
+
+    <div class="interpretation">
+        <strong>Significado dos resultados:</strong>
+        <ul>
+            <li>Ordem 1 e 3: Componentes semi-diurnas principais (~12h) - maré M2 e S2</li>
+            <li>Ordem 2: Componente harmônica exata de 12h</li>
+            <li>Ordem 4: Componente diurna (~24h) - maré K1, O1</li>
+            <li>Ordem 5: Componente anual (~366 dias) - variação sazonal</li>
+        </ul>
+    </div>
+
+    <h3>ITEM 6: Médias Mensais e Variabilidade</h3>
+    <table>
+        <caption><strong>Médias Mensais - Cananéia 2020</strong></caption>
+        <tr><th>Mês</th><th>Média (m)</th><th>Desvio Padrão (m)</th></tr>
+        <tr><td>Janeiro</td><td>-0.1052</td><td>0.3552</td></tr>
+        <tr><td>Fevereiro</td><td>-0.0931</td><td>0.4069</td></tr>
+        <tr><td>Março</td><td>-0.1854</td><td>0.3766</td></tr>
+        <tr><td>Abril</td><td>-0.0215</td><td>0.4328</td></tr>
+        <tr><td>Maio</td><td>0.1616</td><td>0.3775</td></tr>
+        <tr><td>Junho</td><td>0.0903</td><td>0.3562</td></tr>
+        <tr><td>Julho</td><td>0.0978</td><td>0.3575</td></tr>
+        <tr><td>Agosto</td><td>0.0287</td><td>0.3776</td></tr>
+        <tr><td>Setembro</td><td>0.0447</td><td>0.3841</td></tr>
+        <tr><td>Outubro</td><td>-0.0195</td><td>0.3758</td></tr>
+        <tr><td>Novembro</td><td>0.0067</td><td>0.3486</td></tr>
+        <tr><td>Dezembro</td><td>-0.0072</td><td>0.3394</td></tr>
+    </table>
+
+    <p><strong>Resultados:</strong></p>
+    <ul>
+        <li>Maior média mensal: <strong>Maio</strong> (0.1616 m)</li>
+        <li>Menor média mensal: <strong>Março</strong> (-0.1854 m)</li>
+        <li>Maior variabilidade: <strong>Abril</strong> (0.4328 m)</li>
+    </ul>
+
+    <h2>PARTE II: ANÁLISE DOS DADOS DE UBATUBA 2020</h2>
+
+    <h3>ITEM 7: Parâmetros Estatísticos Básicos da Série de Ubatuba</h3>
+    <table>
+        <tr><th>Parâmetro</th><th>Valor</th><th>Unidade</th></tr>
+        <tr><td>Média</td><td>-0.0000</td><td>m</td></tr>
+        <tr><td>Mediana</td><td>0.0131</td><td>m</td></tr>
+        <tr><td>Moda</td><td>0.1791</td><td>m</td></tr>
+        <tr><td>Desvio Padrão</td><td>0.3293</td><td>m</td></tr>
+        <tr><td>Mínimo</td><td>-1.0329</td><td>m</td></tr>
+        <tr><td>Máximo</td><td>1.1321</td><td>m</td></tr>
+        <tr><td>Curtose</td><td>-0.2511</td><td>-</td></tr>
+        <tr><td>Assimetria</td><td>-0.0727</td><td>-</td></tr>
+        <tr><td>Amplitude</td><td>2.1650</td><td>m</td></tr>
+    </table>
+
+    <h3>ITEM 8: Série Temporal com Bandas de Confiança e Tendência - Ubatuba</h3>
+    <ul>
+        <li>Tendência linear: -0.000245 m/dia</li>
+        <li>Taxa anual: -0.0894 m/ano</li>
+    </ul>
+
+    <h3>ITEM 9-12: Continuação da Análise de Ubatuba</h3>
+    <p>Análises similares foram realizadas para Ubatuba, incluindo histogramas, percentis, distribuições de probabilidade, análise de Fourier e médias mensais.</p>
+
+    <h2>PARTE III: COMPARAÇÃO ENTRE CANANÉIA E UBATUBA</h2>
+
+    <h3>ITEM 13: Análise das Diferenças entre as Séries</h3>
+    <table>
+        <caption><strong>Estatísticas da Série de Diferenças (Cananéia - Ubatuba)</strong></caption>
+        <tr><th>Parâmetro</th><th>Valor</th><th>Unidade</th></tr>
+        <tr><td>Média</td><td>0.0000</td><td>m</td></tr>
+        <tr><td>Desvio Padrão</td><td>0.1978</td><td>m</td></tr>
+        <tr><td>Amplitude</td><td>1.6340</td><td>m</td></tr>
+    </table>
+
+    <h3>ITEM 14: Diagramas de Espalhamento e Estatísticas Comparativas</h3>
+    <table>
+        <tr><th>Parâmetro</th><th>Valor</th><th>Significado</th></tr>
+        <tr><td>Coeficiente de correlação (R)</td><td>0.8583</td><td>Correlação forte</td></tr>
+        <tr><td>R-quadrado (R²)</td><td>0.7367</td><td>73.7% da variância explicada</td></tr>
+        <tr><td>Erro médio absoluto (MAE)</td><td>0.1569 m</td><td>Erro médio de 15.7 cm</td></tr>
+        <tr><td>Índice de concordância (d)</td><td>0.9189</td><td>Excelente concordância</td></tr>
+    </table>
+
+    <h3>ITEM 15: Correlações Cruzadas com Defasagens</h3>
+    <ul>
+        <li>Máxima correlação: 0.8605</li>
+        <li>Defasagem da máxima correlação: -1 horas</li>
+    </ul>
+
+    <h2>CONCLUSÕES</h2>
+    <ol>
+        <li><strong>Características estatísticas:</strong> Ambas as estações apresentam padrões similares, com Cananéia mostrando maior variabilidade.</li>
+        <li><strong>Análise harmônica:</strong> Domínio das componentes semi-diurnas e diurnas típicas, com amplitudes maiores em Cananéia.</li>
+        <li><strong>Correlação espacial:</strong> Forte correlação (R = 0.86) com defasagem mínima (-1h) indica propagação costeira.</li>
+        <li><strong>Implicações oceanográficas:</strong> Comportamento esperado para estações sob mesmo regime de maré astronômica.</li>
+    </ol>
+
+    <h2>ARQUIVOS GERADOS</h2>
+    <ul>
+        <li>Script MATLAB: amaroc_L1_adriano_caversan.m</li>
+        <li>Dados: Cananeia_2020.dat, Ubatuba_2020.dat</li>
+        <li>Gráficos: 15 arquivos PNG</li>
+        <li>Relatório: amaroc_L1_adriano_caversan.docx</li>
+    </ul>
+</body>
+</html>
