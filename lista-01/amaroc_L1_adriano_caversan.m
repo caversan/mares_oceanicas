@@ -33,7 +33,7 @@ estat(6,1) = max(elev);
 estat(7,1) = kurtosis(elev);
 estat(8,1) = skewness(elev);
 
-fid=fopen('cananeia_2020_estat.dat','w');
+fid=fopen('lista-01/data-tmp/cananeia_2020_estat.dat','w');
 fprintf(fid,'%10.4f\n',estat);
 fclose(fid);
 
@@ -72,7 +72,7 @@ xlabel('Meses de 2020','fontsize',12)
 ylabel('m','fontsize',12)
 datetick('x','mmm','keepticks')
 fprintf('Taxa de variacao: %.6f m/dia = %.4f m/ano\n', tend, tend*365.25)
-print -dpng cananeia_2020_elev_dp
+print -dpng lista-01/plot/cananeia_2020_elev_dp
 
 % QUESTÃO 3: histograma dos dados de elev
 figure
@@ -84,7 +84,7 @@ xlabel('CLASSES (m)','fontsize',12)
 ylabel('NUMERO DE OCORRENCIAS','fontsize',12)
 max_observacoes = max(n_hist);
 fprintf('Maximo numero de observacoes nas classes: %d\n', max_observacoes)
-print -dpng cananeia_2020_elev_hist
+print -dpng lista-01/plot/cananeia_2020_elev_hist
 
 % QUESTÃO 4: Percentis dos dados de elev
 percentuais=[0:1:100];
@@ -105,7 +105,7 @@ fprintf('Percentil 10%%: %.4f m\n', p10)
 fprintf('Percentil 25%%: %.4f m\n', p25)
 fprintf('Percentil 75%%: %.4f m\n', p75)
 fprintf('Percentil 90%%: %.4f m\n', p90)
-print -dpng cananeia_2020_elev_perc
+print -dpng lista-01/plot/cananeia_2020_elev_perc
 
 % ajuste linear dos dados de elev
 polinom=polyfit(dias,elev,1);
@@ -121,7 +121,7 @@ title('Cananeia 2020 elev (tendencia)','fontsize',12)
 xlabel('Meses de 2020','fontsize',12)
 ylabel('m','fontsize',12)
 datetick('x','mmm','keepticks')
-print -dpng cananeia_2020_elev_tend
+print -dpng lista-01/plot/cananeia_2020_elev_tend
 
 % QUESTÃO 5: Transformada de Fourier da serie temporal de elev
 n2=nudad/2;
@@ -142,7 +142,7 @@ grid on
 title('Cananeia 2020 elev (Transf. Fourier)','fontsize',12)
 xlabel('Periodos (em dias)','fontsize',12)
 ylabel('Amplitude (em m)','fontsize',12)
-print -dpng cananeia_2020_elev_fourier
+print -dpng lista-01/plot/cananeia_2020_elev_fourier
 
 % 5 maiores amplitudes
 [a_sorted, indices] = sort(a_fft_elev, 'descend');
@@ -194,7 +194,7 @@ fprintf('\nRESULTADOS:\n')
 fprintf('Maior media mensal: %.4f m em %s\n', max_media, nomes_meses{mes_max_media})
 fprintf('Menor media mensal: %.4f m em %s\n', min_media, nomes_meses{mes_min_media})
 fprintf('Maior variabilidade: %.4f m em %s\n', max_desvio, nomes_meses{mes_max_desvio})
-print -dpng cananeia_2020_medias_mensais
+print -dpng lista-01/plot/cananeia_2020_medias_mensais
 
 %% ====================================================================
 %% QUESTÕES 7-12: UBATUBA 2020
@@ -224,7 +224,7 @@ estat_ub(6,1) = max(elev_ub);
 estat_ub(7,1) = kurtosis(elev_ub);
 estat_ub(8,1) = skewness(elev_ub);
 
-fid=fopen('ubatuba_2020_estat.dat','w');
+fid=fopen('lista-01/data-tmp/ubatuba_2020_estat.dat','w');
 fprintf(fid,'%10.4f\n',estat_ub);
 fclose(fid);
 
@@ -263,7 +263,7 @@ xlabel('Meses de 2020','fontsize',12)
 ylabel('m','fontsize',12)
 datetick('x','mmm','keepticks')
 fprintf('Taxa de variacao: %.6f m/dia = %.4f m/ano\n', tend_ub, tend_ub*365.25)
-print -dpng ubatuba_2020_elev_dp
+print -dpng lista-01/plot/ubatuba_2020_elev_dp
 
 % QUESTÃO 9: histograma dos dados de elev
 figure
@@ -275,7 +275,7 @@ xlabel('CLASSES (m)','fontsize',12)
 ylabel('NUMERO DE OCORRENCIAS','fontsize',12)
 max_observacoes_ub = max(n_hist_ub);
 fprintf('Maximo numero de observacoes nas classes: %d\n', max_observacoes_ub)
-print -dpng ubatuba_2020_elev_hist
+print -dpng lista-01/plot/ubatuba_2020_elev_hist
 
 % QUESTÃO 10: Percentis dos dados de elev  
 percentuais_ub=[0:1:100];
@@ -296,7 +296,7 @@ fprintf('Percentil 10%%: %.4f m\n', p10_ub)
 fprintf('Percentil 25%%: %.4f m\n', p25_ub)
 fprintf('Percentil 75%%: %.4f m\n', p75_ub)
 fprintf('Percentil 90%%: %.4f m\n', p90_ub)
-print -dpng ubatuba_2020_elev_perc
+print -dpng lista-01/plot/ubatuba_2020_elev_perc
 
 % ajuste linear dos dados de elev
 polinom_ub=polyfit(dias_ub,elev_ub,1);
@@ -312,7 +312,7 @@ title('Ubatuba 2020 elev (tendencia)','fontsize',12)
 xlabel('Meses de 2020','fontsize',12)
 ylabel('m','fontsize',12)
 datetick('x','mmm','keepticks')
-print -dpng ubatuba_2020_elev_tend
+print -dpng lista-01/plot/ubatuba_2020_elev_tend
 
 % QUESTÃO 11: Transformada de Fourier da serie temporal de elev
 n2_ub=nudad_ub/2;
@@ -333,7 +333,7 @@ grid on
 title('Ubatuba 2020 elev (Transf. Fourier)','fontsize',12)
 xlabel('Periodos (em dias)','fontsize',12)
 ylabel('Amplitude (em m)','fontsize',12)
-print -dpng ubatuba_2020_elev_fourier
+print -dpng lista-01/plot/ubatuba_2020_elev_fourier
 
 % 5 maiores amplitudes
 [a_sorted_ub, indices_ub] = sort(a_fft_elev_ub, 'descend');
@@ -384,7 +384,7 @@ fprintf('\nRESULTADOS - UBATUBA:\n')
 fprintf('Maior media mensal: %.4f m em %s\n', max_media_ub, nomes_meses{mes_max_media_ub})
 fprintf('Menor media mensal: %.4f m em %s\n', min_media_ub, nomes_meses{mes_min_media_ub})
 fprintf('Maior variabilidade: %.4f m em %s\n', max_desvio_ub, nomes_meses{mes_max_desvio_ub})
-print -dpng ubatuba_2020_medias_mensais
+print -dpng lista-01/plot/ubatuba_2020_medias_mensais
 
 %% ====================================================================
 %% QUESTÕES 13-15: ANÁLISE COMPARATIVA ENTRE CANANÉIA E UBATUBA
@@ -439,7 +439,7 @@ title('Q13-1: Medias Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Media (m)','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_1_medias_mensais
+print -dpng lista-01/plot/q13_1_medias_mensais
 
 % Grafico 2: DESVIOS PADRAO mensais
 figure
@@ -450,7 +450,7 @@ title('Q13-2: Desvios Padrao Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Desvio Padrao (m)','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_2_desvios_mensais
+print -dpng lista-01/plot/q13_2_desvios_mensais
 
 % Grafico 3: MEDIANAS mensais
 figure
@@ -461,7 +461,7 @@ title('Q13-3: Medianas Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Mediana (m)','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_3_medianas_mensais
+print -dpng lista-01/plot/q13_3_medianas_mensais
 
 % Grafico 4: MODAS mensais
 figure
@@ -472,7 +472,7 @@ title('Q13-4: Modas Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Moda (m)','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_4_modas_mensais
+print -dpng lista-01/plot/q13_4_modas_mensais
 
 % Grafico 5: MINIMOS mensais
 figure
@@ -483,7 +483,7 @@ title('Q13-5: Minimos Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Minimo (m)','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_5_minimos_mensais
+print -dpng lista-01/plot/q13_5_minimos_mensais
 
 % Grafico 6: MAXIMOS mensais
 figure
@@ -494,7 +494,7 @@ title('Q13-6: Maximos Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Maximo (m)','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_6_maximos_mensais
+print -dpng lista-01/plot/q13_6_maximos_mensais
 
 % Grafico 7: CURTOSES mensais
 figure
@@ -505,7 +505,7 @@ title('Q13-7: Curtoses Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Curtose','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_7_curtoses_mensais
+print -dpng lista-01/plot/q13_7_curtoses_mensais
 
 % Grafico 8: ASSIMETRIAS mensais
 figure
@@ -516,7 +516,7 @@ title('Q13-8: Assimetrias Mensais - Cananeia vs Ubatuba','fontsize',12)
 xlabel('Meses','fontsize',12)
 ylabel('Assimetria','fontsize',12)
 set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
-print -dpng q13_8_assimetrias_mensais
+print -dpng lista-01/plot/q13_8_assimetrias_mensais
 
 
 % QUESTÃO 14: Diagramas de espalhamento e parametros estatisticos comparativos
@@ -564,7 +564,7 @@ text(x_pos, y_pos-0.16, sprintf('MAE = %.4f m', MAE), 'FontSize', 12, 'FontWeigh
 text(x_pos, y_pos-0.24, sprintf('MARE = %.2f%%', MARE), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
 text(x_pos, y_pos-0.32, sprintf('d = %.4f', indice_concordancia), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
 
-print -dpng q14_correlacao_mensal
+print -dpng lista-01/plot/q14_correlacao_mensal
 
 
 % Grafico adicional: Parametros estatisticos em barras
@@ -589,7 +589,7 @@ for i = 1:length(parametros)
     end
 end
 
-print -dpng q14_parametros_estatisticos
+print -dpng lista-01/plot/q14_parametros_estatisticos
 
 
 % QUESTÃO 15: Correlacoes cruzadas com defasagens
@@ -637,7 +637,7 @@ end
 text(0.6*max(defasagens), y_pos-0.16, interpretacao, ...
      'FontSize', 10, 'FontWeight', 'bold', 'BackgroundColor', 'cyan')
 
-print -dpng q15_correlacao_cruzada
+print -dpng lista-01/plot/q15_correlacao_cruzada
 
 
 fprintf('\n===== QUESTAO 15 CONCLUIDA =====\n')
