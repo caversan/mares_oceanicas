@@ -1,0 +1,141 @@
+# ====================================
+# .gitignore para Projetos MATLAB + Windows
+# ====================================
+
+# ========== MATLAB ==========
+# Arquivos temporários do MATLAB
+*.m~
+*.mat
+*.asv
+*.autosave
+
+# Cache e compilados
+*.mex*
+*.p
+codegen/
+*.prj
+
+# Simulink
+*.slx.autosave
+*.slx.original
+*.slxc
+slprj/
+
+# MATLAB App Designer
+*.mlapp~
+
+# MATLAB Reports
+Report/
+
+# MATLAB Compiler
+*.ctf
+*.exe
+*.dll
+
+# ========== WINDOWS ==========
+# Thumbnails
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# ========== ESPECÍFICO DO PROJETO ==========
+# Dados temporários
+data-tmp/
+temp/
+tmp/
+
+# Backups automáticos
+backup/
+*.backup
+*.bak
+
+# Logs
+*.log
+*.txt
+
+# Arquivos de saída temporários (manter apenas os finais em plot/)
+# Descomente se quiser ignorar todas as imagens:
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+# *.svg
+
+# Arquivos de dados grandes (descomente se necessário)
+# *.dat
+# *.csv
+
+# ========== EDITORES ==========
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Notepad++
+*.npp
+
+# ========== SISTEMA ==========
+# macOS (caso haja colaboração)
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux (caso haja colaboração)
+*~
+.nfs*
+
+# ========== OUTROS ==========
+# Arquivos temporários genéricos
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Arquivos de configuração local
+config.local.*
+settings.local.*
+
+# Node.js (caso use ferramentas web)
+node_modules/
+npm-debug.log*
+
+# Python (caso use scripts auxiliares)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# ========== PROJETO ESPECÍFICO ==========
+# Manter arquivos importantes do projeto:
+# !Cananeia_2020.dat
+# !Ubatuba_2020.dat
+# !amaroc_L1_adriano_caversan.m
+# !plot/*.png
+# !README.md
