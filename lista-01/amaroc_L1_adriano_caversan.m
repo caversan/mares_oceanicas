@@ -5,6 +5,7 @@
 clear all; close all; clc
 
 % Leitura dos dados de Cananeia
+fprintf('\n>>> Leitura dos dados de Cananeia <<<\n')
 load Cananeia_2020.dat
 x = Cananeia_2020;
 nudad = size(x,1);
@@ -68,7 +69,6 @@ ylabel('m','fontsize',12)
 datetick('x','mmm','keepticks')
 fprintf('Taxa de variacao: %.6f m/dia = %.4f m/ano\n', tend, tend*365.25)
 print -dpng cananeia_2020_elev_dp
-pause
 
 % QUESTÃO 3: histograma dos dados de elev
 figure
@@ -81,9 +81,8 @@ ylabel('NUMERO DE OCORRENCIAS','fontsize',12)
 max_observacoes = max(n_hist);
 fprintf('Maximo numero de observacoes nas classes: %d\n', max_observacoes)
 print -dpng cananeia_2020_elev_hist
-pause
 
-% Percentis dos dados de elev
+% QUESTÃO 4: Percentis dos dados de elev
 percentuais=[0:1:100];
 percentis=prctile(elev,percentuais);
 figure
@@ -106,57 +105,94 @@ print -dpng cananeia_2020_elev_perc
 
 % ajuste linear dos dados de elev
 polinom=polyfit(dias,elev,1);
-% Ajuste linear dos dados de elev
-p = polyfit(dias, elev, 1);        % coeficientes [slope intercept]
-tend = p(1);                       % inclinação (unidade por dia)
-elev_pol = polyval(p, dias);
-
-figure
-plot(dias, elev, 'LineWidth', 2)
-hold on
-plot(dias, elev_pol, 'r', 'LineWidth', 2)
-hold off
-xlim([min(dias) max(dias)])
-ylim([min(elev) max(elev)])        % ou ajustar manualmente se preferir
-grid on
-title(sprintf('pto p05 201604 cmems elev (tendência = %.4g/unid/dia)', tend), 'FontSize', 12)
-xlabel('Dias', 'FontSize', 12)
-ylabel('m', 'FontSize', 12)
-legend('Dados', 'Ajuste linear', 'Location', 'best')
-
-% Salvar figura como PNG
-print('-dpng', 'pto_p05_201604_cmems_elev_tend.png')
 tend=polinom(1);
 elev_pol=polyval(polinom,dias);
 figure
 plot(dias,elev,'LineWidth',2)
 hold
 plot(dias,elev_pol,'r','LineWidth',2)
-axis([1 inf -inf inf])
+axis([min(dias) max(dias) -inf inf])
 grid on
-title('pto p05 201604 cmems elev (tendencia)','fontsize',12)
-xlabel('Dias','fontsize',12)
+title('Cananeia 2020 elev (tendencia)','fontsize',12)
+xlabel('Meses de 2020','fontsize',12)
 ylabel('m','fontsize',12)
-print -dpng pto_p05_201604_cmems_elev_tend
+datetick('x','mmm','keepticks')
+print -dpng cananeia_2020_elev_tend
 
-% Transformada de Fourier da serie temporal de elev
+% QUESTÃO 5: Transformada de Fourier da serie temporal de elev
 n2=nudad/2;
 n=1:n2;
 Tn_horas=nudad./n;
 Tn_dias=nudad./n/24;
-% Fn=1./Tn;
+Fn=1./Tn_dias;
 altura_media=mean(elev);
 elev=elev-altura_media;
 fft_elev=fft(elev);
 fft_elev2=fft_elev(2:n2+1);
 a_fft_elev=abs(fft_elev2)/n2;
+
 figure
-bar(Tn_dias,a_fft_elev,'LineWidth',2)
+plot(Tn_dias,a_fft_elev,'b-','LineWidth',2)
+axis([0 2 0 max(a_fft_elev)*1.1])
 grid on
-title('pto p05 201604 cmems elev (Transf. Fourier)','fontsize',12)
+title('Cananeia 2020 elev (Transf. Fourier)','fontsize',12)
 xlabel('Periodos (em dias)','fontsize',12)
 ylabel('Amplitude (em m)','fontsize',12)
-print -dpng pto_p05_201604_cmems_elev_fourier
+print -dpng cananeia_2020_elev_fourier
+
+% 5 maiores amplitudes
+[a_sorted, indices] = sort(a_fft_elev, 'descend');
+fprintf('5 MAIORES AMPLITUDES:\n')
+for i=1:5
+    idx = indices(i);
+    fprintf('Amplitude: %.6f m - Periodo: %.2f dias - Freq.Angular: %.6f rad/dia\n', ...
+            a_sorted(i), Tn_dias(idx), 2*pi*Fn(idx))
+end
 
 elev=elev+altura_media;
 
+% QUESTÃO 6: Medias mensais e desvios padrao
+nomes_meses = {'Jan','Feb','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'};
+medias_mensais = zeros(1,12);
+desvios_mensais = zeros(1,12);
+
+% Calculo das medias e desvios mensais
+for i=1:12
+    dados_mes = elev(mes==i);
+    medias_mensais(i) = mean(dados_mes);
+    desvios_mensais(i) = std(dados_mes);
+end
+
+% Tabela de medias mensais
+fprintf('\n===== MEDIAS MENSAIS E DESVIOS PADRAO =====\n')
+fprintf('Mes      Media (m)   Desvio Padrao (m)\n')
+fprintf('---------------------------------------\n')
+for i=1:12
+    fprintf('%s      %8.4f    %8.4f\n', nomes_meses{i}, medias_mensais(i), desvios_mensais(i))
+end
+
+% Plotagem das medias mensais
+figure
+errorbar(1:12, medias_mensais, desvios_mensais, 'o-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+title('Cananeia 2020 - Medias Mensais com Desvio Padrao','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Nivel do Mar (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',nomes_meses)
+axis([0.5 12.5 min(medias_mensais)-0.4 max(medias_mensais)+0.4])
+
+% Identificacao dos extremos
+[max_media, mes_max_media] = max(medias_mensais);
+[min_media, mes_min_media] = min(medias_mensais);
+[max_desvio, mes_max_desvio] = max(desvios_mensais);
+
+fprintf('\nRESULTADOS:\n')
+fprintf('Maior media mensal: %.4f m em %s\n', max_media, nomes_meses{mes_max_media})
+fprintf('Menor media mensal: %.4f m em %s\n', min_media, nomes_meses{mes_min_media})
+fprintf('Maior variabilidade: %.4f m em %s\n', max_desvio, nomes_meses{mes_max_desvio})
+print -dpng cananeia_2020_medias_mensais
+
+
+% Leitura dos dados de Ubatuba
+fprintf('\n>>> Leitura dos dados de Ubatuba <<<\n')
+load Ubatuba_2020.dat
