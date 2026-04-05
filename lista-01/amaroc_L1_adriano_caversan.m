@@ -519,4 +519,132 @@ set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ag
 print -dpng q13_8_assimetrias_mensais
 
 
+% QUESTÃO 14: Diagramas de espalhamento e parametros estatisticos comparativos
+
+% Diagrama de espalhamento
+figure
+% Usando dados mensais para melhor visualizacao (12 pontos)
+scatter(medias_mensais, medias_mensais_ub, 100, 'filled', 'MarkerFaceColor', [0.2 0.6 0.8])
+hold on
+
+% Linha de regressao
+P = polyfit(medias_mensais, medias_mensais_ub, 1);
+x_fit = [min(medias_mensais) max(medias_mensais)];
+y_fit = polyval(P, x_fit);
+plot(x_fit, y_fit, 'r-', 'LineWidth', 3)
+
+% Linha 1:1 (correlacao perfeita)
+plot(x_fit, x_fit, 'b--', 'LineWidth', 2)
+grid on
+
+% Calculos dos parametros estatisticos com dados mensais
+r_mensal = corrcoef(medias_mensais, medias_mensais_ub);
+coef_correlacao = r_mensal(1,2);
+R2 = coef_correlacao^2;
+MAE = mean(abs(medias_mensais_ub - medias_mensais));
+MARE = (MAE / mean(medias_mensais)) * 100;
+
+% Indice de concordancia (Willmott) para dados mensais
+numerador = sum((medias_mensais_ub - medias_mensais).^2);
+denominador = sum((abs(medias_mensais_ub - mean(medias_mensais)) + abs(medias_mensais - mean(medias_mensais))).^2);
+indice_concordancia = 1 - (numerador / denominador);
+
+% Adicionando parametros estatisticos no grafico
+xlabel('Cananeia - Medias Mensais (m)', 'fontsize', 12)
+ylabel('Ubatuba - Medias Mensais (m)', 'fontsize', 12)
+title('Q14: Correlacao Mensal - Cananeia vs Ubatuba', 'fontsize', 14)
+legend('Medias Mensais', 'Regressao Linear', 'Linha 1:1', 'Location', 'northwest')
+
+% Texto com parametros estatisticos no grafico
+x_pos = min(medias_mensais) + 0.1*(max(medias_mensais) - min(medias_mensais));
+y_pos = max(medias_mensais_ub) - 0.05*(max(medias_mensais_ub) - min(medias_mensais_ub));
+text(x_pos, y_pos, sprintf('R² = %.4f', R2), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
+text(x_pos, y_pos-0.08, sprintf('r = %.4f', coef_correlacao), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
+text(x_pos, y_pos-0.16, sprintf('MAE = %.4f m', MAE), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
+text(x_pos, y_pos-0.24, sprintf('MARE = %.2f%%', MARE), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
+text(x_pos, y_pos-0.32, sprintf('d = %.4f', indice_concordancia), 'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'white')
+
+print -dpng q14_correlacao_mensal
+
+
+% Grafico adicional: Parametros estatisticos em barras
+figure
+parametros = [R2, abs(coef_correlacao), MAE*10, MARE/10, indice_concordancia];
+nomes_param = {'R²', '|r|', 'MAE×10', 'MARE÷10', 'd'};
+bar(parametros, 'FaceColor', [0.3 0.7 0.4])
+grid on
+title('Q14: Parametros Estatisticos Comparativos', 'fontsize', 14)
+xlabel('Parametros', 'fontsize', 12)
+ylabel('Valores Normalizados', 'fontsize', 12)
+set(gca, 'XTickLabel', nomes_param)
+
+% Valores reais sobre as barras
+for i = 1:length(parametros)
+    if i == 3
+        text(i, parametros(i)+0.02, sprintf('%.4f', MAE), 'HorizontalAlignment', 'center', 'FontWeight', 'bold')
+    elseif i == 4
+        text(i, parametros(i)+0.02, sprintf('%.1f%%', MARE), 'HorizontalAlignment', 'center', 'FontWeight', 'bold')
+    else
+        text(i, parametros(i)+0.02, sprintf('%.4f', parametros(i)), 'HorizontalAlignment', 'center', 'FontWeight', 'bold')
+    end
+end
+
+print -dpng q14_parametros_estatisticos
+
+
+% QUESTÃO 15: Correlacoes cruzadas com defasagens
+
+% Limitando a defasagem maxima para melhor visualizacao (±48 horas = ±2 dias)
+max_lag = 48;
+
+% Calculando correlacao cruzada
+[correlacao_cruzada, defasagens] = xcorr(elev, elev_ub, max_lag, 'coeff');
+
+% Encontrando a maxima correlacao e sua defasagem
+[max_correlacao, idx_max] = max(abs(correlacao_cruzada));
+defasagem_max = defasagens(idx_max);
+correlacao_maxima = correlacao_cruzada(idx_max);
+
+% Plotando o grafico de correlacao cruzada
+figure
+plot(defasagens, correlacao_cruzada, 'b-', 'LineWidth', 2)
+hold on
+% Destacando o ponto de maxima correlacao
+plot(defasagem_max, correlacao_maxima, 'ro', 'MarkerSize', 10, 'MarkerFaceColor', 'r')
+grid on
+xlabel('Defasagem (horas)', 'fontsize', 12)
+ylabel('Coeficiente de Correlacao', 'fontsize', 12)
+title('Q15: Correlacao Cruzada - Cananeia vs Ubatuba', 'fontsize', 14)
+
+% Adicionando linha de referencia zero
+plot([min(defasagens) max(defasagens)], [0 0], 'k--', 'LineWidth', 1)
+
+% Texto com informacoes da maxima correlacao
+y_pos = max(correlacao_cruzada) - 0.1*(max(correlacao_cruzada) - min(correlacao_cruzada));
+text(0.6*max(defasagens), y_pos, sprintf('Máxima Correlação: %.4f', correlacao_maxima), ...
+     'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'yellow')
+text(0.6*max(defasagens), y_pos-0.08, sprintf('Defasagem: %d horas', defasagem_max), ...
+     'FontSize', 12, 'FontWeight', 'bold', 'BackgroundColor', 'yellow')
+
+% Interpretacao da defasagem
+if defasagem_max > 0
+    interpretacao = 'Ubatuba atrasa em relacao a Cananeia';
+elseif defasagem_max < 0
+    interpretacao = 'Cananeia atrasa em relacao a Ubatuba';
+else
+    interpretacao = 'Series em fase (sem defasagem)';
+end
+text(0.6*max(defasagens), y_pos-0.16, interpretacao, ...
+     'FontSize', 10, 'FontWeight', 'bold', 'BackgroundColor', 'cyan')
+
+print -dpng q15_correlacao_cruzada
+
+
+fprintf('\n===== QUESTAO 15 CONCLUIDA =====\n')
+fprintf('Maxima correlacao: %.4f\n', correlacao_maxima)
+fprintf('Defasagem: %d horas\n', defasagem_max)
+fprintf('Interpretacao: %s\n', interpretacao)
+
+
+
 
