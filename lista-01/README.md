@@ -12,6 +12,59 @@
 
 ---
 
+## Como Executar o Projeto
+
+### **Pré-requisitos**
+- **MATLAB R2024a** ou versão superior
+- Arquivos de dados: `Cananeia_2020.dat` e `Ubatuba_2020.dat`
+- Pasta `plot/` para salvar as imagens geradas
+
+### **Estrutura do Projeto**
+```
+lista-01/
+├── amaroc_L1_adriano_caversan.m    # Script principal
+├── Cananeia_2020.dat               # Dados de Cananéia 2020
+├── Ubatuba_2020.dat                # Dados de Ubatuba 2020
+├── plot/                           # Pasta com todas as imagens geradas
+├── data-tmp/                       # Arquivos de dados temporários
+└── README.md                       # Este documento
+```
+
+### **Instruções de Execução**
+
+1. **Abrir o MATLAB** na pasta do projeto
+2. **Executar o script principal:**
+   ```matlab
+   run('amaroc_L1_adriano_caversan.m')
+   ```
+3. **Aguardar a execução completa** (aproximadamente 2-3 minutos)
+4. **Interagir com as pausas** pressionando qualquer tecla para continuar entre os gráficos
+
+### **Saídas Geradas**
+
+**🔢 Arquivos de dados:**
+- `cananeia_2020_estat.dat` - Estatísticas de Cananéia
+- `ubatuba_2020_estat.dat` - Estatísticas de Ubatuba
+
+**📊 Gráficos (pasta `plot/`):**
+- **Questões 1-6:** 6 gráficos de análise de Cananéia
+- **Questões 7-12:** 6 gráficos de análise de Ubatuba  
+- **Questões 13-15:** 11 gráficos comparativos entre as estações
+
+**📋 Terminal:** Resultados numéricos das análises estatísticas
+
+### **Tempo de Execução**
+- **Análise completa:** ~2-3 minutos
+- **15 questões respondidas** automaticamente
+- **23 gráficos gerados** na pasta `plot/`
+
+### **Solução de Problemas**
+- Se o MATLAB não encontrar os arquivos `.dat`, verifique se estão na mesma pasta do script
+- Se houver erro na pasta `plot/`, crie-a manualmente antes da execução
+- Para pular as pausas, comente as linhas com `pause` no código
+
+---
+
 ## Objetivo Geral
 
 Analisar dados horários de nível do mar de 2020 coletados em duas estações maregráficas do litoral paulista: **Cananéia** e **Ubatuba**. O exercício visa aplicar técnicas estatísticas, análise espectral e correlação para caracterizar o comportamento das marés oceânicas nessas localidades.
@@ -47,7 +100,7 @@ Analisar dados horários de nível do mar de 2020 coletados em duas estações m
 
 **Interpretação oceanográfica:** A tendência indica possível variação do nível médio do mar (subida/descida), enquanto as bandas de desvio mostram a variabilidade natural das marés. A análise permite identificar eventos extremos e padrões sazonais.
 
-![Série Temporal Cananéia](cananeia_2020_elev_dp.png)
+![Série Temporal Cananéia](plot/cananeia_2020_elev_dp.png)
 *Figura 2: Série temporal de Cananéia com bandas de desvio padrão e tendência linear*
 
 ---
@@ -62,7 +115,7 @@ Analisar dados horários de nível do mar de 2020 coletados em duas estações m
 
 **Interpretação oceanográfica:** O histograma revela a forma da distribuição (normal, assimétrica, bimodal), enquanto os percentis indicam os níveis de água associados a diferentes probabilidades de ocorrência, úteis para estudos de inundação e ressacas.
 
-![Histograma Cananéia](cananeia_2020_elev_hist.png)
+![Histograma Cananéia](plot/cananeia_2020_elev_hist.png)
 *Figura 3: Histograma de frequências do nível do mar em Cananéia*
 
 ---
@@ -74,7 +127,7 @@ Analisar dados horários de nível do mar de 2020 coletados em duas estações m
 
 **Interpretação oceanográfica:** Permite determinar probabilidades de excedência para níveis críticos e estabelecer critérios para alerta de marés meteorológicas e eventos extremos.
 
-![Percentis Cananéia](cananeia_2020_elev_perc.png)
+![Percentis Cananéia](plot/cananeia_2020_elev_perc.png)
 *Figura 4: Curva de percentis do nível do mar em Cananéia*
 
 ---
@@ -89,7 +142,7 @@ Analisar dados horários de nível do mar de 2020 coletados em duas estações m
 
 **Interpretação oceanográfica:** Os picos espectrais revelam as principais constituintes harmônicas das marés (M2, S2, K1, O1, etc.). Períodos próximos a 0.5 dias indicam marés semidiurnas, enquanto períodos de ~1 dia indicam marés diurnas.
 
-![Análise de Fourier Cananéia](cananeia_2020_elev_fourier.png)
+![Análise de Fourier Cananéia](plot/cananeia_2020_elev_fourier.png)
 *Figura 5: Análise espectral (Fourier) do nível do mar em Cananéia*
 
 ---
@@ -104,7 +157,7 @@ Analisar dados horários de nível do mar de 2020 coletados em duas estações m
 
 **Interpretação oceanográfica:** Variações sazonais podem indicar influência de fatores meteorológicos, mudanças na circulação oceânica regional, ou efeitos de larga escala como El Niño/La Niña.
 
-![Médias Mensais Cananéia](cananeia_2020_medias_mensais.png)
+![Médias Mensais Cananéia](plot/cananeia_2020_medias_mensais.png)
 *Figura 6: Médias mensais com desvios padrão - Cananéia*
 
 ---
@@ -119,10 +172,10 @@ As questões 7-12 repetem exatamente as mesmas análises das questões 1-6, por�
 
 ### **Comparação Visual das Análises**
 
-![Médias Mensais Ubatuba](ubatuba_2020_medias_mensais.png)
+![Médias Mensais Ubatuba](plot/ubatuba_2020_medias_mensais.png)
 *Figura 7: Médias mensais com desvios padrão - Ubatuba*
 
-![Análise de Fourier Ubatuba](ubatuba_2020_elev_fourier.png)
+![Análise de Fourier Ubatuba](plot/ubatuba_2020_elev_fourier.png)
 *Figura 8: Análise espectral (Fourier) do nível do mar em Ubatuba*
 
 ---
@@ -144,13 +197,13 @@ As questões 7-12 repetem exatamente as mesmas análises das questões 1-6, por�
 
 **Interpretação oceanográfica:** Permite identificar se as duas estações apresentam sazonalidade similar ou comportamentos distintos, indicando influências locais versus regionais.
 
-![Comparação Médias](q13_1_medias_mensais.png)
+![Comparação Médias](plot/q13_1_medias_mensais.png)
 *Figura 9: Comparação das médias mensais entre Cananéia e Ubatuba*
 
-![Comparação Desvios](q13_2_desvios_mensais.png)
+![Comparação Desvios](plot/q13_2_desvios_mensais.png)
 *Figura 10: Comparação dos desvios padrão mensais*
 
-![Comparação Máximos](q13_6_maximos_mensais.png)
+![Comparação Máximos](plot/q13_6_maximos_mensais.png)
 *Figura 11: Comparação dos máximos mensais*
 
 ---
@@ -180,10 +233,10 @@ As questões 7-12 repetem exatamente as mesmas análises das questões 1-6, por�
 - **MAE baixo:** Diferenças pequenas entre estações
 - **Índice de concordância próximo a 1:** Boa concordância temporal
 
-![Correlação Mensal](q14_correlacao_mensal.png)
+![Correlação Mensal](plot/q14_correlacao_mensal.png)
 *Figura 12: Diagrama de espalhamento - correlação entre médias mensais*
 
-![Parâmetros Estatísticos](q14_parametros_estatisticos.png)
+![Parâmetros Estatísticos](plot/q14_parametros_estatisticos.png)
 *Figura 13: Parâmetros estatísticos comparativos em formato de barras*
 
 ---
@@ -207,7 +260,7 @@ As questões 7-12 repetem exatamente as mesmas análises das questões 1-6, por�
 - **Defasagem > 0:** Ubatuba atrasa (onda se propaga de Cananéia para Ubatuba)
 - **Defasagem < 0:** Cananéia atrasa (onda se propaga de Ubatuba para Cananéia)
 
-![Correlação Cruzada](q15_correlacao_cruzada.png)
+![Correlação Cruzada](plot/q15_correlacao_cruzada.png)
 *Figura 14: Correlação cruzada com defasagens temporais*
 
 ---
