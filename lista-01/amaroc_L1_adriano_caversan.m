@@ -386,3 +386,137 @@ fprintf('Menor media mensal: %.4f m em %s\n', min_media_ub, nomes_meses{mes_min_
 fprintf('Maior variabilidade: %.4f m em %s\n', max_desvio_ub, nomes_meses{mes_max_desvio_ub})
 print -dpng ubatuba_2020_medias_mensais
 
+%% ====================================================================
+%% QUESTÕES 13-15: ANÁLISE COMPARATIVA ENTRE CANANÉIA E UBATUBA
+%% ====================================================================
+
+% QUESTÃO 13: Graficos comparativos mensais de todas as estatisticas
+
+% Calcular estatisticas mensais adicionais para Cananeia
+medianas_mensais = zeros(1,12);
+modas_mensais = zeros(1,12);
+minimos_mensais = zeros(1,12);
+maximos_mensais = zeros(1,12);
+curtoses_mensais = zeros(1,12);
+assimetrias_mensais = zeros(1,12);
+
+% Calcular estatisticas mensais adicionais para Ubatuba
+medianas_mensais_ub = zeros(1,12);
+modas_mensais_ub = zeros(1,12);
+minimos_mensais_ub = zeros(1,12);
+maximos_mensais_ub = zeros(1,12);
+curtoses_mensais_ub = zeros(1,12);
+assimetrias_mensais_ub = zeros(1,12);
+
+% Loop pelos meses para calcular todas as estatisticas
+for i = 1:12
+    % Dados de Cananeia
+    dados_mes = elev(mes == i);
+    medianas_mensais(i) = median(dados_mes);
+    modas_mensais(i) = mode(dados_mes);
+    minimos_mensais(i) = min(dados_mes);
+    maximos_mensais(i) = max(dados_mes);
+    curtoses_mensais(i) = kurtosis(dados_mes);
+    assimetrias_mensais(i) = skewness(dados_mes);
+    
+    % Dados de Ubatuba
+    dados_mes_ub = elev_ub(mes_ub == i);
+    medianas_mensais_ub(i) = median(dados_mes_ub);
+    modas_mensais_ub(i) = mode(dados_mes_ub);
+    minimos_mensais_ub(i) = min(dados_mes_ub);
+    maximos_mensais_ub(i) = max(dados_mes_ub);
+    curtoses_mensais_ub(i) = kurtosis(dados_mes_ub);
+    assimetrias_mensais_ub(i) = skewness(dados_mes_ub);
+end
+
+% Grafico 1: MEDIAS mensais
+figure
+x = 1:12;
+plot(x, medias_mensais, 'o-', x, medias_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-1: Medias Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Media (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_1_medias_mensais
+
+% Grafico 2: DESVIOS PADRAO mensais
+figure
+plot(x, desvios_mensais, 'o-', x, desvios_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-2: Desvios Padrao Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Desvio Padrao (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_2_desvios_mensais
+
+% Grafico 3: MEDIANAS mensais
+figure
+plot(x, medianas_mensais, 'o-', x, medianas_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-3: Medianas Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Mediana (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_3_medianas_mensais
+
+% Grafico 4: MODAS mensais
+figure
+plot(x, modas_mensais, 'o-', x, modas_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-4: Modas Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Moda (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_4_modas_mensais
+
+% Grafico 5: MINIMOS mensais
+figure
+plot(x, minimos_mensais, 'o-', x, minimos_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-5: Minimos Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Minimo (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_5_minimos_mensais
+
+% Grafico 6: MAXIMOS mensais
+figure
+plot(x, maximos_mensais, 'o-', x, maximos_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-6: Maximos Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Maximo (m)','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_6_maximos_mensais
+
+% Grafico 7: CURTOSES mensais
+figure
+plot(x, curtoses_mensais, 'o-', x, curtoses_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-7: Curtoses Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Curtose','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_7_curtoses_mensais
+
+% Grafico 8: ASSIMETRIAS mensais
+figure
+plot(x, assimetrias_mensais, 'o-', x, assimetrias_mensais_ub, 's-', 'LineWidth', 2, 'MarkerSize', 8)
+grid on
+legend('Cananeia', 'Ubatuba', 'Location', 'best')
+title('Q13-8: Assimetrias Mensais - Cananeia vs Ubatuba','fontsize',12)
+xlabel('Meses','fontsize',12)
+ylabel('Assimetria','fontsize',12)
+set(gca,'XTick',1:12,'XTickLabel',{'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'})
+print -dpng q13_8_assimetrias_mensais
+
+
+
