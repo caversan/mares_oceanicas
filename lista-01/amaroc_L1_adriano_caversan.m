@@ -18,7 +18,7 @@ minuto = x(:,5);
 segundo = x(:,6);
 elev = x(:,7);
 
-% Estatistica basica da serie de elevacao
+% QUESTÃO 1: Estatistica basica da serie de elevacao
 estat(1,1) = mean(elev);
 estat(2,1) = median(elev);
 estat(3,1) = mode(elev);
@@ -35,7 +35,7 @@ fclose(fid);
 % Criando variavel temporal
 dias = datenum(ano, mes, dia, hora, minuto, segundo);
 
-% plotagem da serie temporal de elev
+% QUESTÃO 2: plotagem da serie temporal de elev
 figure
 plot(dias,elev,'LineWidth',2)
 axis([min(dias) max(dias) -inf inf])
@@ -70,14 +70,18 @@ fprintf('Taxa de variacao: %.6f m/dia = %.4f m/ano\n', tend, tend*365.25)
 print -dpng cananeia_2020_elev_dp
 pause
 
-% histograma dos dados de elev
+% QUESTÃO 3: histograma dos dados de elev
 figure
+[n_hist, x_hist] = hist(elev);
 hist(elev)
 grid on
-title('pto p05 201604 cmems elev (histograma)','fontsize',12)
+title('Cananeia 2020 elev (histograma)','fontsize',12)
 xlabel('CLASSES (m)','fontsize',12)
 ylabel('NUMERO DE OCORRENCIAS','fontsize',12)
-print -dpng pto_p05_201604_cmems_elev_hist
+max_observacoes = max(n_hist);
+fprintf('Maximo numero de observacoes nas classes: %d\n', max_observacoes)
+print -dpng cananeia_2020_elev_hist
+pause
 
 % Percentis dos dados de elev
 percentuais=[0:1:100];
@@ -85,10 +89,20 @@ percentis=prctile(elev,percentuais);
 figure
 plot(percentis,percentuais,'LineWidth',2)
 grid on
-title('pto p05 201604 cmems elev (percentis)','fontsize',12)
+title('Cananeia 2020 elev (percentis)','fontsize',12)
 xlabel('NIVEL DO MAR (m)','fontsize',12)
 ylabel('PERCENT. OCORRENCIA ABAIXO DO NIVEL','fontsize',12)
-print -dpng pto_p05_201604_cmems_elev_perc
+
+% Valores numericos dos percentis especificos
+p10 = prctile(elev,10);
+p25 = prctile(elev,25);
+p75 = prctile(elev,75);
+p90 = prctile(elev,90);
+fprintf('Percentil 10%%: %.4f m\n', p10)
+fprintf('Percentil 25%%: %.4f m\n', p25)
+fprintf('Percentil 75%%: %.4f m\n', p75)
+fprintf('Percentil 90%%: %.4f m\n', p90)
+print -dpng cananeia_2020_elev_perc
 
 % ajuste linear dos dados de elev
 polinom=polyfit(dias,elev,1);
