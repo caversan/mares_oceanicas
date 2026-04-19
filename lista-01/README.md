@@ -4,11 +4,14 @@
 
 **Curso de pós-graduação:** Oceanografia  
 **Área de concentração:** Oceanografia Física  
-**Disciplina:** Análise de marés oceânicas – IOC 5801  
-**Curso de Especialização:** Medição, Análise, Previsão e Modelagem do Nível do Mar  
+ 
+**Curso de Especialização:** Medição, Análise, Previsão e Modelagem do Nível do Mar 
+**Módulo:** Análise de marés oceânicas – IOC 5801 
 **Disciplina:** Método harmônico de análise e previsão do nível do mar  
-**Período:** 1º Semestre de 2026  
+**Período:** 1º Semestre de 2026 
+ 
 **Aluno:** Adriano Caversan
+**Professor:** Joseph Harari
 
 ---
 
