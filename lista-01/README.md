@@ -1,3 +1,5 @@
+# UNIVERSIDADE DE SÃO PAULO - INSTITURO DE OCEANOGRAFIA - IOUSP
+
 # ANÁLISE DE MARÉS OCEÂNICAS - LISTA DE EXERCÍCIOS 1
 
 ## Informações do Curso
@@ -9,7 +11,7 @@
 **Módulo:** Análise de marés oceânicas – IOC 5801 
 **Disciplina:** Método harmônico de análise e previsão do nível do mar  
 **Período:** 1º Semestre de 2026 
- 
+
 **Aluno:** Adriano Caversan
 **Professor:** Joseph Harari
 
