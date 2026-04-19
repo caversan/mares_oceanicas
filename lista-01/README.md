@@ -1,6 +1,6 @@
-# UNIVERSIDADE DE SÃO PAULO - INSTITURO DE OCEANOGRAFIA - IOUSP
+# Universidade de São Paulo - Instituto de Oceanografia - IOUSP
 
-# ANÁLISE DE MARÉS OCEÂNICAS - LISTA DE EXERCÍCIOS 1
+# Análise de marés oceânica - Lista de exercícios 1
 
 ## Informações do Curso
 
