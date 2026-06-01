@@ -72,6 +72,27 @@ backup/
 *.backup
 *.bak
 
+# ─── Arquivos temporários de edição de documentos ───────────────────────────
+# Arquivos de lock do LibreOffice (criados enquanto o arquivo está aberto)
+.~lock.*#
+
+# Arquivos de lock do Microsoft Word/Office
+~$*.docx
+~$*.doc
+~$*.odt
+~$*.xlsx
+~$*.pptx
+
+# Backups automáticos de editores
+*.odt~
+*.docx~
+*.doc~
+*.pdf~
+
+# Arquivos temporários do LibreOffice
+.~*.odt
+.~*.docx
+
 # Logs
 *.log
 
