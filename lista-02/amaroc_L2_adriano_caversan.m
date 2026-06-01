@@ -94,7 +94,7 @@ residual_can = nimar_can - can_prev;
 
 % Plot do residual
 figure
-plot(t_can, residual_can, 'k', 'LineWidth', 0.8)
+plot(t_can, residual_can, 'g', 'LineWidth', 0.8)
 datetick('x', 'mmm', 'keeplimits')
 axis([t_can(1) t_can(end) -inf inf])
 grid on
