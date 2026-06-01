@@ -261,7 +261,8 @@ add_p(
     "esperada para sinais de maré meteorológica que têm coerência regional mas também "
     "componentes locais. O viés nulo confirma a adequação da remoção das médias. O RMSE de "
     "0,106 m reflete diferenças na resposta local ao forçamento meteorológico. "
-    "A correlação cruzada apresenta pico próximo ao lag zero, sem defasagem expressiva."
+    "A correlação cruzada apresenta pico no lag = −5 h, indicando que Ubatuba lidera "
+    "Cananeia em ~5 h no sinal de nível médio — sinal meteorológico propagando-se para SW."
 )
 add_table(
     ["Parâmetro", "Valor"],
