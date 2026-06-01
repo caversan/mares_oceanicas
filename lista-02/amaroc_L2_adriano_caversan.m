@@ -92,15 +92,17 @@ fprintf('\n--- Q2: Residual - Cananeia ---\n')
 
 residual_can = nimar_can - can_prev;
 
-% Plot do residual
+% Plot do nivel do mar e residual no mesmo eixo (estilo aula)
 figure
-plot(t_can, residual_can, 'g', 'LineWidth', 0.8)
+plot(t_can, nimar_can, 'b', 'LineWidth', 0.8)
 datetick('x', 'mmm', 'keeplimits')
+hold on
+plot(t_can, residual_can, 'r', 'LineWidth', 0.8)
 axis([t_can(1) t_can(end) -inf inf])
 grid on
 xlabel('Meses de 2020', 'fontsize', 12)
-ylabel('Residual (m)', 'fontsize', 12)
-title('Q2: Cananeia 2020 - Serie residual (medido - previsao)', 'fontsize', 12)
+ylabel('m', 'fontsize', 12)
+title('Q2: Cananeia 2020 - NIVEL DO MAR E MARE RESIDUAL', 'fontsize', 12)
 print -dpng plot/q02_cananeia_residual
 
 fprintf('\n----- ESTATISTICA DO RESIDUAL (Cananeia) -----\n')
@@ -112,16 +114,26 @@ fprintf('Maximo:       %8.4f m\n', max(residual_can))
 fprintf('Curtose:      %8.4f\n',   kurtosis(residual_can))
 fprintf('Assimetria:   %8.4f\n',   skewness(residual_can))
 
-% FFT do residual
-n2_res     = floor(nudad_can/2);
+% FFT do residual com janela de Hann (reduz leakage espectral)
+n2_res      = floor(nudad_can/2);
 Tn_dias_res = nudad_can ./ (1:n2_res) / 24;
-res_ac     = residual_can - mean(residual_can);
-a_fft_res  = abs(fft(res_ac));
-a_fft_res  = a_fft_res(2:n2_res+1) / n2_res;
+res_ac      = residual_can - mean(residual_can);
+win_res     = 0.5 * (1 - cos(2*pi*(0:nudad_can-1)' / nudad_can));
+a_fft_res   = abs(fft(res_ac .* win_res));
+% correcao de amplitude: 2/sum(win) = 4/N para janela Hann simetrica
+a_fft_res   = a_fft_res(2:n2_res+1) * 2 / sum(win_res);
+
+% Ordenar por periodo crescente
+Tn_res_sort = fliplr(Tn_dias_res);
+a_res_sort  = fliplr(a_fft_res);
+
+% Y-max na faixa meteorologica (1-30 dias)
+mask_res = Tn_res_sort >= 1 & Tn_res_sort <= 30;
+ymax_res = max(a_res_sort(mask_res)) * 1.2;
 
 figure
-bar(Tn_dias_res, a_fft_res)
-axis([0 30 0 max(a_fft_res)*1.1])
+plot(Tn_res_sort, a_res_sort, 'b', 'LineWidth', 1.5)
+axis([1 30 0 ymax_res])
 grid on
 xlabel('Periodo (dias)', 'fontsize', 12)
 ylabel('Amplitude (m)', 'fontsize', 12)
@@ -176,20 +188,33 @@ fprintf('Maximo:       %8.4f m\n', max(nimed_can))
 fprintf('Curtose:      %8.4f\n',   kurtosis(nimed_can))
 fprintf('Assimetria:   %8.4f\n',   skewness(nimed_can))
 
-% FFT do nivel medio
-n2_nm      = floor(nudad_can/2);
-Tn_dias_nm  = nudad_can ./ (1:n2_nm) / 24;
-nimed_ac   = nimed_can - mean(nimed_can);
-a_fft_nm   = abs(fft(nimed_ac));
-a_fft_nm   = a_fft_nm(2:n2_nm+1) / n2_nm;
+% FFT do nivel medio: media diaria antes da FFT
+% (nimed e de baixa frequencia; reduzir para 366 bins diarios concentra
+%  a energia nos periodos de interesse: SA~365d, SSA~183d, sinotico 5-30d)
+N_dias      = floor(nudad_can / 24);
+nimed_grid  = reshape(nimed_can(1:N_dias*24), 24, N_dias);
+nimed_1d    = mean(nimed_grid, 1)';          % media diaria (coluna, N_dias pontos)
+
+n2_nm       = floor(N_dias / 2);
+Tn_dias_nm  = N_dias ./ (1:n2_nm);          % periodos em dias
+nimed_1d_ac = nimed_1d - mean(nimed_1d);
+a_fft_nm    = abs(fft(nimed_1d_ac));
+a_fft_nm    = a_fft_nm(2:n2_nm+1) / n2_nm;
+
+% Ordenar por periodo crescente
+Tn_nm_sort  = fliplr(Tn_dias_nm);
+a_nm_sort   = fliplr(a_fft_nm);
+
+mask_nm = Tn_nm_sort >= 5;
+ymax_nm = max(a_nm_sort(mask_nm)) * 1.2;
 
 figure
-bar(Tn_dias_nm, a_fft_nm)
-axis([0 60 0 max(a_fft_nm)*1.1])
+plot(Tn_nm_sort, a_nm_sort, 'b', 'LineWidth', 1.5)
+axis([5 max(Tn_nm_sort) 0 ymax_nm])
 grid on
 xlabel('Periodo (dias)', 'fontsize', 12)
 ylabel('Amplitude (m)', 'fontsize', 12)
-title('Q3: Cananeia 2020 - FFT do nivel medio do mar', 'fontsize', 12)
+title('Q3: Cananeia 2020 - FFT do nivel medio do mar (media diaria)', 'fontsize', 12)
 print -dpng plot/q03_cananeia_nimed_fft
 
 %% -----------------------------------------------------------------------
@@ -318,19 +343,21 @@ fprintf('\n--- Analise harmonica - Ubatuba ---\n')
 %% -----------------------------------------------------------------------
 fprintf('\n--- Q5: Amplificacao e atrasos - Cananeia vs Ubatuba ---\n')
 
-comps_q5  = {'M2',      'S2',      'K1',      'O1'};
-omega_q5  = [28.9841,   30.0000,   15.0411,   13.9430];  % graus/hora
+% Mesma ordem da aula: O1, K1, M2, S2
+comps_q5  = {'O1',      'K1',      'M2',      'S2'};
+omega_q5  = [13.9430,   15.0411,   28.9841,   30.0000];  % graus/hora
 
 nomes_can_str = cellstr(can_estrut.name);
 nomes_uba_str = cellstr(uba_estrut.name);
 
-H_can_q5 = zeros(1,4);  H_uba_q5 = zeros(1,4);
-g_can_q5 = zeros(1,4);  g_uba_q5 = zeros(1,4);
-amplif_q5 = zeros(1,4); atraso_q5 = zeros(1,4);
+H_can_q5     = zeros(1,4);  H_uba_q5 = zeros(1,4);
+g_can_q5     = zeros(1,4);  g_uba_q5 = zeros(1,4);
+hrel_q5      = zeros(1,4);  % H_can / H_uba  (Cananeia/Ubatuba)
+defas_min_q5 = zeros(1,4);  % defasagem em minutos
 
-fprintf('\n%-5s  %8s  %8s  %8s  %8s  %10s  %10s\n', ...
-    'Comp','H_Can(m)','G_Can(g)','H_Uba(m)','G_Uba(g)','H_uba/H_can','Atraso(h)')
-fprintf('%s\n', repmat('-',1,72))
+fprintf('\n%-5s  %8s  %8s  %8s  %8s  %13s  %12s\n', ...
+    'Comp','H_Can(m)','G_Can(g)','H_Uba(m)','G_Uba(g)','hrel(can/uba)','defas(min)')
+fprintf('%s\n', repmat('-',1,78))
 
 for k = 1:4
     idx_c = find(strcmp(strtrim(nomes_can_str), comps_q5{k}), 1);
@@ -346,39 +373,34 @@ for k = 1:4
     H_uba_q5(k) = uba_estrut.tidecon(idx_u, 1);
     g_uba_q5(k) = uba_estrut.tidecon(idx_u, 3);
 
-    amplif_q5(k) = H_uba_q5(k) / H_can_q5(k);
-    dg = g_uba_q5(k) - g_can_q5(k);
-    dg = mod(dg + 180, 360) - 180;         % normalizar para [-180, 180]
-    atraso_q5(k) = dg / omega_q5(k);       % horas (+ = Ubatuba atrasa)
+    hrel_q5(k)      = H_can_q5(k) / H_uba_q5(k);                        % can/uba
+    T_per_k         = 360 / omega_q5(k);                                 % periodo (h)
+    defas_min_q5(k) = (g_can_q5(k) - g_uba_q5(k)) * T_per_k / 360 * 60; % minutos
 
-    fprintf('%-5s  %8.4f  %8.2f  %8.4f  %8.2f  %10.4f  %10.2f\n', ...
+    fprintf('%-5s  %8.4f  %8.2f  %8.4f  %8.2f  %13.4f  %12.2f\n', ...
         comps_q5{k}, H_can_q5(k), g_can_q5(k), ...
-        H_uba_q5(k), g_uba_q5(k), amplif_q5(k), atraso_q5(k))
+        H_uba_q5(k), g_uba_q5(k), hrel_q5(k), defas_min_q5(k))
 end
 
-% Grafico de amplitudes comparativas
-figure
-x_q5 = 1:4;
-bar(x_q5 - 0.2, H_can_q5, 0.35, 'b')
-hold on
-bar(x_q5 + 0.2, H_uba_q5, 0.35, 'r')
-grid on
-set(gca, 'XTick', 1:4, 'XTickLabel', comps_q5, 'fontsize', 11)
-legend('Cananeia', 'Ubatuba', 'Location', 'best')
-xlabel('Componente de mare', 'fontsize', 12)
-ylabel('Amplitude (m)', 'fontsize', 12)
-title('Q5: Amplitudes de M2, S2, K1, O1 - Cananeia vs Ubatuba', 'fontsize', 12)
-print -dpng plot/q05_amplitudes_comp
+% Plots de evolucao temporal por componente (estilo aula)
+conv_q5  = pi/180;
+tempo_q5 = 1:0.25:36.5;   % ~1.5 periodo de M2
 
-% Grafico dos atrasos
-figure
-bar(1:4, atraso_q5, 0.5, 'FaceColor', [0.4 0.6 0.9])
-grid on
-set(gca, 'XTick', 1:4, 'XTickLabel', comps_q5, 'fontsize', 11)
-xlabel('Componente de mare', 'fontsize', 12)
-ylabel('Atraso Ubatuba em relacao a Cananeia (h)', 'fontsize', 12)
-title('Q5: Atrasos de fase - Cananeia -> Ubatuba', 'fontsize', 12)
-print -dpng plot/q05_atrasos
+for k = 1:4
+    pred_can = H_can_q5(k) * cos((omega_q5(k) * tempo_q5 - g_can_q5(k)) * conv_q5);
+    pred_uba = H_uba_q5(k) * cos((omega_q5(k) * tempo_q5 - g_uba_q5(k)) * conv_q5);
+    figure
+    plot(tempo_q5, pred_can, 'LineWidth', 2)
+    hold on
+    plot(tempo_q5, pred_uba, 'r', 'LineWidth', 2)
+    grid on
+    title(['PREV ' comps_q5{k} ' can(b)/uba(r) hrel ' num2str(hrel_q5(k)) ...
+           ' defas(min) ' num2str(defas_min_q5(k))], 'fontsize', 12)
+    xlabel('Tempo (h)', 'fontsize', 12)
+    ylabel('Nivel do mar (m)', 'fontsize', 12)
+    nome_q5 = ['plot/q05_prev_' lower(comps_q5{k})];
+    print('-dpng', nome_q5)
+end
 
 %% -----------------------------------------------------------------------
 %% QUESTAO 6 - Nivel medio Cananeia vs Ubatuba, estatistica e xcorr
@@ -425,25 +447,32 @@ N_min = min(nudad_can, nudad_uba);
 nm_can_v = nimed_can(1:N_min);
 nm_uba_v = nimed_uba(1:N_min);
 
-r_mat = corrcoef(nm_can_v, nm_uba_v);
-r_nm  = r_mat(1,2);
-bias  = mean(nm_uba_v - nm_can_v);
-rmse  = sqrt(mean((nm_uba_v - nm_can_v).^2));
-
-% Indice de concordancia de Willmott
-num_w  = sum((nm_uba_v - nm_can_v).^2);
-den_w  = sum((abs(nm_uba_v - mean(nm_can_v)) + abs(nm_can_v - mean(nm_can_v))).^2);
-willmott = 1 - num_w/den_w;
+% R2 baseado em variancia (skill score), formula da aula
+difer_nm     = nm_uba_v - nm_can_v;
+var_media_nm = (var(nm_can_v) + var(nm_uba_v)) / 2;
+ss_nm        = 1 - var(difer_nm) / var_media_nm;
 
 fprintf('\n----- ESTATISTICA COMPARATIVA DO NIVEL MEDIO -----\n')
-fprintf('Correlacao r:    %.4f\n', r_nm)
-fprintf('R2:              %.4f\n', r_nm^2)
-fprintf('Vies (Uba-Can):  %.4f m\n', bias)
-fprintf('RMSE:            %.4f m\n', rmse)
-fprintf('Willmott d:      %.4f\n', willmott)
+fprintf('R2 (skill score): %.4f\n', ss_nm)
+fprintf('Vies (Uba-Can):  %.4f m\n', mean(difer_nm))
+fprintf('RMSE:            %.4f m\n', sqrt(mean(difer_nm.^2)))
 
-% Correlacao cruzada
-[xcorr_nm, lags_nm] = xcorr(nm_can_v, nm_uba_v, 120, 'coeff');
+% Diagrama de espalhamento com linha diagonal (estilo aula)
+figure
+scatter(nm_can_v, nm_uba_v)
+hold on
+med_min = (min(nm_can_v) + min(nm_uba_v)) / 2;
+med_max = (max(nm_can_v) + max(nm_uba_v)) / 2;
+h_diag = plot([med_min med_max], [med_min med_max], 'r', 'LineWidth', 2);
+legend(h_diag, ['R^2 = ' num2str(ss_nm, '%.4f')], 'Location', 'northwest')
+grid on
+title('Q6: can2020 uba2020 nimed diagr. espalhamento', 'fontsize', 12)
+xlabel('Nivel medio do mar can (m)', 'fontsize', 12)
+ylabel('Nivel medio do mar uba (m)', 'fontsize', 12)
+print -dpng plot/q06_nimed_scatter
+
+% Correlacao cruzada (sem normalizacao, estilo aula)
+[xcorr_nm, lags_nm] = xcorr(nm_can_v, nm_uba_v, 120);
 [max_xcnm, idx_xcnm] = max(xcorr_nm);
 lag_h_nm = lags_nm(idx_xcnm);
 
@@ -451,14 +480,10 @@ fprintf('Max xcorr nivel medio: %.4f em defasagem = %d h\n', max_xcnm, lag_h_nm)
 
 figure
 plot(lags_nm, xcorr_nm, 'b', 'LineWidth', 1.5)
-hold on
-plot(lag_h_nm, max_xcnm, 'ro', 'MarkerSize', 10, 'MarkerFaceColor', 'r')
-plot([lags_nm(1) lags_nm(end)], [0 0], 'k--')
 grid on
-xlabel('Defasagem (horas)', 'fontsize', 12)
-ylabel('Correlacao cruzada normalizada', 'fontsize', 12)
-title('Q6: Correlacao cruzada do nivel medio - Cananeia vs Ubatuba', 'fontsize', 12)
-text(lag_h_nm+2, max_xcnm-0.03, sprintf('r=%.3f, lag=%dh', max_xcnm, lag_h_nm), 'fontsize', 11)
+xlabel('Lags (horas)', 'fontsize', 12)
+ylabel('Correlacao cruzada', 'fontsize', 12)
+title('Q6: can2020 uba2020 nimed xcorr', 'fontsize', 12)
 print -dpng plot/q06_nimed_xcorr
 
 %% =======================================================================
