@@ -120,7 +120,7 @@ a_fft_res  = abs(fft(res_ac));
 a_fft_res  = a_fft_res(2:n2_res+1) / n2_res;
 
 figure
-plot(Tn_dias_res, a_fft_res, 'b', 'LineWidth', 1)
+bar(Tn_dias_res, a_fft_res)
 axis([0 30 0 max(a_fft_res)*1.1])
 grid on
 xlabel('Periodo (dias)', 'fontsize', 12)
@@ -184,7 +184,7 @@ a_fft_nm   = abs(fft(nimed_ac));
 a_fft_nm   = a_fft_nm(2:n2_nm+1) / n2_nm;
 
 figure
-plot(Tn_dias_nm, a_fft_nm, 'r', 'LineWidth', 1)
+bar(Tn_dias_nm, a_fft_nm)
 axis([0 60 0 max(a_fft_nm)*1.1])
 grid on
 xlabel('Periodo (dias)', 'fontsize', 12)
@@ -205,20 +205,44 @@ nimed_q4 = nimed_can + media_can;
 series_q4 = {nimar_q4, mare_q4, nimed_q4};
 nomes_q4  = {'Nivel do mar', 'Mare (previsao)', 'Nivel medio'};
 cores_q4  = {'b', 'r', 'g'};
+dt_q4     = 1;   % dados horarios
+
+% Ajuste de distribuicao normal e calculo analitico das probabilidades
+dprob    = 1e-5;
+probab_v = (dprob:dprob:1-dprob)';
+
+nivel_mu_cell   = cell(1,3);
+prob_exced_cell = cell(1,3);
+prob_naoex_cell = cell(1,3);
+per_ret_cell    = cell(1,3);
+
+for k = 1:3
+    mu_k    = mean(series_q4{k});
+    sigma_k = std(series_q4{k});
+    pd_k    = makedist('Normal', mu_k, sigma_k);
+
+    nivel_v            = icdf(pd_k, probab_v);
+    nivel_mu_cell{k}   = nivel_v - mu_k;
+    prob_naoex_cell{k} = probab_v * 100;
+    prob_exced_cell{k} = 100 - prob_naoex_cell{k};
+
+    per_ret_v = zeros(size(probab_v));
+    mask = nivel_v < mu_k;
+    per_ret_v(mask)  = 1 ./ (8766 .* probab_v(mask)      ./ dt_q4);
+    per_ret_v(~mask) = 1 ./ (8766 .* (1-probab_v(~mask)) ./ dt_q4);
+    per_ret_cell{k} = per_ret_v;
+end
 
 % Probabilidade de excedencia
 figure
 hold on
 for k = 1:3
-    sv = sort(series_q4{k}, 'descend');
-    N  = length(sv);
-    m  = (1:N)';
-    plot(sv, m/(N+1), cores_q4{k}, 'LineWidth', 1.5)
+    plot(nivel_mu_cell{k}, prob_exced_cell{k}, cores_q4{k}, 'LineWidth', 1.5)
 end
 grid on
 legend(nomes_q4, 'Location', 'northeast')
-xlabel('Nivel (m)', 'fontsize', 12)
-ylabel('Probabilidade de excedencia', 'fontsize', 12)
+xlabel('Nivel relativo a media (m)', 'fontsize', 12)
+ylabel('Probabilidade de excedencia (%)', 'fontsize', 12)
 title('Q4: Cananeia 2020 - Probabilidades de excedencia', 'fontsize', 12)
 print -dpng plot/q04_excedencia
 
@@ -226,48 +250,37 @@ print -dpng plot/q04_excedencia
 figure
 hold on
 for k = 1:3
-    sv = sort(series_q4{k}, 'ascend');
-    N  = length(sv);
-    m  = (1:N)';
-    plot(sv, m/(N+1), cores_q4{k}, 'LineWidth', 1.5)
+    plot(nivel_mu_cell{k}, prob_naoex_cell{k}, cores_q4{k}, 'LineWidth', 1.5)
 end
 grid on
 legend(nomes_q4, 'Location', 'northwest')
-xlabel('Nivel (m)', 'fontsize', 12)
-ylabel('Probabilidade de nao excedencia', 'fontsize', 12)
+xlabel('Nivel relativo a media (m)', 'fontsize', 12)
+ylabel('Probabilidade de nao excedencia (%)', 'fontsize', 12)
 title('Q4: Cananeia 2020 - Probabilidades de nao excedencia', 'fontsize', 12)
 print -dpng plot/q04_nao_excedencia
 
-% Periodos de retorno (dados horarios: dt=1h -> T_anos = T_horas/8760)
+% Periodos de retorno
 figure
 hold on
 for k = 1:3
-    sv = sort(series_q4{k}, 'descend');
-    N  = length(sv);
-    m  = (1:N)';
-    T_anos = (N+1) ./ m / 8760;
-    semilogx(T_anos, sv, cores_q4{k}, 'LineWidth', 1.5)
+    plot(nivel_mu_cell{k}, per_ret_cell{k}, cores_q4{k}, 'LineWidth', 1.5)
 end
 grid on
-legend(nomes_q4, 'Location', 'southeast')
-xlabel('Periodo de retorno (anos)', 'fontsize', 12)
-ylabel('Nivel (m)', 'fontsize', 12)
+legend(nomes_q4, 'Location', 'best')
+xlabel('Nivel relativo a media (m)', 'fontsize', 12)
+ylabel('Periodo de retorno (anos)', 'fontsize', 12)
 title('Q4: Cananeia 2020 - Periodos de retorno', 'fontsize', 12)
 print -dpng plot/q04_retorno
 
 % Tabela resumo de niveis caracteristicos
-fprintf('\n--- Niveis para periodos de retorno selecionados (Cananeia) ---\n')
+fprintf('\n--- Niveis (relat. media) para periodos de retorno selecionados (Cananeia) ---\n')
 T_ref = [0.5, 1, 2, 5, 10];   % anos
-fprintf('%-15s', 'T_retorno(a)'); fprintf('%8.1f', T_ref); fprintf('\n')
+fprintf('%-20s', 'T_retorno(anos)'); fprintf('%8.1f', T_ref); fprintf('\n')
 for k = 1:3
-    sv = sort(series_q4{k}, 'descend');
-    N  = length(sv);
-    m  = (1:N)';
-    T_anos = (N+1) ./ m / 8760;
-    fprintf('%-15s', nomes_q4{k})
+    fprintf('%-20s', nomes_q4{k})
     for tr = T_ref
-        [~, idx_tr] = min(abs(T_anos - tr));
-        fprintf('%8.4f', sv(idx_tr))
+        [~, idx_tr] = min(abs(per_ret_cell{k} - tr));
+        fprintf('%8.4f', nivel_mu_cell{k}(idx_tr))
     end
     fprintf('\n')
 end
@@ -600,8 +613,10 @@ for k = 1:4
     subplot(2,2,k)
     plot(ew_el, ns_el, 'b', 'LineWidth', 2)
     hold on
-    plot(ew_el(1), ns_el(1), 'go', 'MarkerSize', 8, 'MarkerFaceColor', 'g')
+    mat_zero = zeros(size(ew_el));
+    quiver(mat_zero, mat_zero, ew_el, ns_el, 'r', 'LineWidth', 1)
     plot(0, 0, 'k+', 'MarkerSize', 10, 'LineWidth', 2)
+    text(ew_el(1), ns_el(1), 't=0', 'fontsize', 9)
     axis equal
     grid on
     xlabel('EW (m/s)', 'fontsize', 10)

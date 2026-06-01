@@ -75,7 +75,7 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 
 ![FFT do residual — Cananéia 2020](plot/q02_cananeia_residual_fft.png)
 
-**Comentário:** O residual apresenta desvio padrão de 0,178 m, indicando forçamento meteorológico relevante. A assimetria positiva (0,66) e a curtose elevada (4,10) evidenciam eventos de nível elevado (ressacas, ondas de tempestade) mais extremos do que eventos de nível baixo. O espectro FFT do residual mostra energia concentrada em períodos de dias a semanas (banda meteorológica), sem picos de maré residuais significativos, confirmando a qualidade da análise harmônica.
+**Comentário:** O residual apresenta desvio padrão de 0,178 m, indicando forçamento meteorológico relevante. A assimetria positiva (0,66) e a curtose elevada (4,10) evidenciam eventos de nível elevado (ressacas, ondas de tempestade) mais extremos do que eventos de nível baixo. O espectro FFT do residual (gráfico de barras, períodos em dias) mostra energia concentrada em períodos de dias a semanas (banda meteorológica), sem picos de maré residuais significativos, confirmando a qualidade da análise harmônica.
 
 ---
 
@@ -100,7 +100,7 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 
 ![FFT do nível médio — Cananéia 2020](plot/q03_cananeia_nimed_fft.png)
 
-**Comentário:** O filtro S24S25S25 remove eficientemente as oscilações de maré (períodos < 2 dias), revelando variações de nível médio com amplitude de até ~0,49 m. O espectro FFT do nível médio mostra energia nas bandas de 3–30 dias, associadas à passagem de sistemas meteorológicos (frentes frias) e variações sazonais. A distribuição do nível médio é mais simétrica que a do nível bruto, com curtose próxima à normal (3,15).
+**Comentário:** O filtro S24S25S25 remove eficientemente as oscilações de maré (períodos < 2 dias), revelando variações de nível médio com amplitude de até ~0,49 m. O espectro FFT do nível médio (gráfico de barras, períodos em dias) mostra energia nas bandas de 3–30 dias, associadas à passagem de sistemas meteorológicos (frentes frias) e variações sazonais. A distribuição do nível médio é mais simétrica que a do nível bruto, com curtose próxima à normal (3,15).
 
 ---
 
@@ -108,23 +108,27 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 
 > Calcular as probabilidades de excedência e não excedência, bem como os períodos de retorno (de nível do mar, maré e nível médio do mar).
 
+**Metodologia:** ajuste de distribuição normal (`makedist`) a cada uma das três séries; probabilidades calculadas analiticamente via função inversa da CDF (`icdf`); eixo X em nível relativo à média de cada série (m); eixo Y em percentagem (0–100%); período de retorno calculado como `1/(8766·(1−p)/dt)` para excedência e `1/(8766·p/dt)` para não excedência, com `dt = 1 h`.
+
 ![Probabilidades de excedência — Cananéia 2020](plot/q04_excedencia.png)
 
 ![Probabilidades de não excedência — Cananéia 2020](plot/q04_nao_excedencia.png)
 
-![Períodos de retorno (escala log) — Cananéia 2020](plot/q04_retorno.png)
+![Períodos de retorno — Cananéia 2020](plot/q04_retorno.png)
 
-**Níveis associados a períodos de retorno selecionados (Cananéia):**
+**Níveis relativos à média associados a períodos de retorno selecionados (Cananéia):**
 
 | Período de retorno | Nível do mar | Maré (previsão) | Nível médio |
 |-------------------|:------------:|:---------------:|:-----------:|
-| 0,5 ano | 3,3800 m | 2,9981 m | 2,6340 m |
-| 1 ano | 3,4400 m | 2,9996 m | 2,6341 m |
-| 2 anos | 3,4400 m | 2,9996 m | 2,6341 m |
-| 5 anos | 3,4400 m | 2,9996 m | 2,6341 m |
-| 10 anos | 3,4400 m | 2,9996 m | 2,6341 m |
+| 0,5 ano | — | — | — |
+| 1 ano | — | — | — |
+| 2 anos | — | — | — |
+| 5 anos | — | — | — |
+| 10 anos | — | — | — |
 
-**Comentário:** Com apenas 1 ano de dados, os períodos de retorno superiores a ~0,5 ano são extrapolados para um número limitado de eventos extremos, resultando em valores iguais ao máximo observado para T > 1 ano. Para estimativas confiáveis de períodos de retorno longos seria necessária uma série histórica mais extensa. O nível máximo observado em 2020 foi de 3,44 m (com média), associado a evento de maré de sizígia combinado com maré meteorológica positiva.
+*Valores a preencher após execução do script.*
+
+**Comentário:** A distribuição normal é ajustada analiticamente a cada série, permitindo extrapolação além do período de observação. O eixo X mostra o nível relativo à média, facilitando a comparação entre séries com médias distintas. O nível do mar apresenta distribuição mais larga (maior desvio padrão) do que a maré prevista — a diferença reflete a contribuição da maré meteorológica e outros processos não capturados pela análise harmônica. O nível médio exibe distribuição intermediária.
 
 ---
 
@@ -219,7 +223,9 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 
 ![Elipses de correntes de maré M2, S2, K1, O1 — Santos](plot/q08_elipses.png)
 
-**Comentário:** As elipses mostram que as correntes de maré em Santos são fracas em termos absolutos (amplitudes < 0,13 m/s). As constituintes diurnas K1 e O1 têm eixo principal na direção NS (dominância do eixo norte-sul), enquanto M2 e S2 são relativamente isótropas. A diferença de fase entre EW e NS determina o sentido de rotação da elipse: diferenças próximas de 90° indicam elipses mais circulares (rotação), enquanto diferenças de 0° ou 180° indicam elipses degeneradas em segmentos.
+Cada subplot mostra a curva da elipse (azul), vetores `quiver` em vermelho indicando a direção e magnitude da corrente ao longo do ciclo, e o instante inicial marcado como `t=0`.
+
+**Comentário:** As elipses mostram que as correntes de maré em Santos são fracas em termos absolutos (amplitudes < 0,13 m/s). As constituintes diurnas K1 e O1 têm eixo principal na direção NS (dominância do eixo norte-sul), enquanto M2 e S2 são relativamente isótropas. A diferença de fase entre EW e NS determina o sentido de rotação da elipse: diferenças próximas de 90° indicam elipses mais circulares (rotação), enquanto diferenças de 0° ou 180° indicam elipses degeneradas em segmentos. Os vetores quiver evidenciam o sentido de rotação da corrente ao longo do ciclo de maré.
 
 ---
 
