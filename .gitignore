@@ -2,10 +2,12 @@
 # .gitignore para Projetos MATLAB + Windows
 # ====================================
 
+
 # ========== MATLAB ==========
 # Arquivos temporários do MATLAB
 *.m~
 *.mat
+!lista-02/t_tide/*.mat
 *.asv
 *.autosave
 
@@ -63,6 +65,7 @@ $RECYCLE.BIN/
 data-tmp/
 temp/
 tmp/
+material-aula/
 
 # Backups automáticos
 backup/
@@ -71,7 +74,7 @@ backup/
 
 # Logs
 *.log
-*.txt
+
 
 # Arquivos de saída temporários (manter apenas os finais em plot/)
 # Descomente se quiser ignorar todas as imagens:

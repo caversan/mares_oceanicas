@@ -1,0 +1,51 @@
+Curso de pós-graduação: Oceanografia
+Área de concentração: Oceanografia Física
+Disciplina:
+Análise de marés oceânicas – IOC 5801
+Curso de Especialização:
+Medição, Análise, Previsão e Modelagem do Nível do Mar
+Disciplina:
+Método harmônico de análise e previsão do nível do mar
+2ª LISTA DE EXERCÍCIOS – 1º SEMESTRE DE 2026.
+Arquivos de dados a processar:
+Dados de Cananéia (25°01,0’S 47°55,5’W) e Ubatuba (23°30,0’S 45°07,3’W),
+nos arquivos Cananeia_2000.dat e Ubatuba_2000.dat, contendo: tempo (em
+seg), ano, mês, dia, hora e nível do mar (em m).
+Dados na região costeira de Santos (24°0,757’S 46°19,579’W), no arquivo
+adp_0m.txt, contendo: ano, mês, dia, hora, min, seg, nível do mar (em cm),
+temperatura no fundo (oC) e componentes EW e NS das correntes na superfície
+(em cm/s).
+Para a série temporal horária de nível do mar em Cananéia (SP, Brasil):
+1) Plotar a série temporal, efetuar a análise de maré e uma previsão de maré
+para o período de observações.
+2) Plotar a série residual (medições menos previsão) e aplicar as análises
+estatística e espectral (fft). Comentar os resultados obtidos.
+3) Plotar a série horária de nível médio do mar, calculada através da aplicação
+do filtro de médias móveis S24S25S25 (onde Sn é a média de n dados) e
+aplicar as análises estatística e espectral (fft). Comentar os resultados
+obtidos.
+4) Calcular as probabilidades de excedência e não excedência, bem como os
+períodos de retorno (de nível do mar, maré e nível médio do mar).
+A seguir, comparar as séries de nível do mar de Cananéia e Ubatuba (SP,
+Brasil):
+5) Calcular as amplificações ou atenuações, e os atrasos no tempo, das
+componentes de maré M2, S2, K1 e O1, entre Cananéia e Ubatuba.
+6) Comparar as séries de nível médio do mar de Cananéia e Ubatuba, através
+de plotagens e cálculo de parâmetros comparativos e correlações cruzadas
+(com defasagens). Comentar os resultados obtidos.
+A partir dos dados na região costeira de Santos (SP):
+7) Plotar as séries de componentes de correntes EW e NS, efetuar análise das
+correntes de maré e fazer previsão de correntes de maré para o período
+analisado
+8) Plotar as elipses das componentes de correntes de maré M2, S2, K1 e O1.
+9) Plotar as séries residuais (medições menos previsão) das componentes de
+correntes EW e NS.
+10)Efetuar comparações com parâmetros estatísticos básicos e relações
+cruzadas (com defasagens) entre as séries de nível do mar e de temperatura
+no fundo.
+OBSERVAÇÕES
+Antes de processar dados de nível do mar (de Cananéia, Ubatuba e da região
+costeira de Santos), subtrair as respectivas médias.
+Procurar sintetizar todas as respostas na forma de gráficos e tabelas
+Fornecer todas as respostas de forma sequencial, ordenada, com fácil
+identificação e leitura.
