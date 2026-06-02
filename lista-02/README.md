@@ -155,9 +155,13 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 | M2 | 0,3596 | 91,17 | 0,3101 | 77,84 | **1,160** | 27,6 |
 | S2 | 0,2418 | 97,81 | 0,1853 | 83,87 | **1,305** | 27,9 |
 
-![Comparação de amplitudes M2, S2, K1, O1 — Cananéia vs Ubatuba](plot/q05_amplitudes_comp.png)
+![Componente O1 — Cananeia (azul) vs Ubatuba (vermelho)](plot/q05_prev_o1.png)
 
-![Atrasos de fase — Cananéia → Ubatuba](plot/q05_atrasos.png)
+![Componente K1 — Cananeia (azul) vs Ubatuba (vermelho)](plot/q05_prev_k1.png)
+
+![Componente M2 — Cananeia (azul) vs Ubatuba (vermelho)](plot/q05_prev_m2.png)
+
+![Componente S2 — Cananeia (azul) vs Ubatuba (vermelho)](plot/q05_prev_s2.png)
 
 **Comentário:** As constituintes semidiurnas (M2 e S2) mostram **atenuação** em Ubatuba em relação a Cananéia (~14% e ~23%, respectivamente), enquanto as diurnas (K1 e O1) apresentam leve **amplificação** (~5% e ~3%). Os atrasos negativos indicam que Ubatuba **adianta-se** a Cananéia em ~0,46 h para as semidiurnas, o que é fisicamente consistente com a propagação da onda de maré no litoral norte de São Paulo (direção sudeste→nordeste). As diferenças de fase diurnas são pequenas (< 0,2 h).
 
