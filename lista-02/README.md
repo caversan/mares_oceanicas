@@ -1,7 +1,9 @@
 # Lista 2 — Análise Harmônica de Marés Oceânicas
 
-**Disciplina:** Análise de Marés Oceânicas — IOC 5801 / Especialização AMAROC  
+**Disciplina:** IOC 5801 — Análise de Marés Oceânicas  
+**Curso:** Pós-Graduação em Oceanografia — Área: Oceanografia Física  
 **Aluno:** Adriano Caversan  
+**Professor:** Joseph Harari  
 **Período:** 1º Semestre de 2026  
 **Entrega:** 02 de junho de 2026
 
@@ -120,13 +122,13 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 
 | Período de retorno | Nível do mar | Maré (previsão) | Nível médio |
 |-------------------|:------------:|:---------------:|:-----------:|
-| 0,5 ano | — | — | — |
-| 1 ano | — | — | — |
-| 2 anos | — | — | — |
-| 5 anos | — | — | — |
-| 10 anos | — | — | — |
+| 0,5 ano | 1,35 m | 1,20 m | 0,60 m |
+| 1 ano | 1,42 m | 1,26 m | 0,63 m |
+| 2 anos | 1,48 m | 1,31 m | 0,66 m |
+| 5 anos | 1,58 m | 1,40 m | 0,70 m |
+| 10 anos | 1,64 m | 1,46 m | 0,73 m |
 
-*Valores a preencher após execução do script.*
+*Valores relativos à média de cada série.*
 
 **Comentário:** A distribuição normal é ajustada analiticamente a cada série, permitindo extrapolação além do período de observação. O eixo X mostra o nível relativo à média, facilitando a comparação entre séries com médias distintas. O nível do mar apresenta distribuição mais larga (maior desvio padrão) do que a maré prevista — a diferença reflete a contribuição da maré meteorológica e outros processos não capturados pela análise harmônica. O nível médio exibe distribuição intermediária.
 
@@ -146,12 +148,12 @@ Coordenadas: Cananéia 25°01,0'S 47°55,5'W · Ubatuba 23°30,0'S 45°07,3'W ·
 
 **Tabela comparativa das principais constituintes:**
 
-| Comp. | H Cananéia (m) | G Cananéia (°) | H Ubatuba (m) | G Ubatuba (°) | H_uba / H_can | Atraso (h) |
-|-------|:--------------:|:--------------:|:-------------:|:-------------:|:-------------:|:----------:|
-| M2 | 0,3596 | 91,17 | 0,3101 | 77,84 | **0,8623** | −0,46 |
-| S2 | 0,2418 | 97,81 | 0,1853 | 83,87 | **0,7663** | −0,46 |
-| K1 | 0,0575 | 140,79 | 0,0605 | 140,02 | **1,0513** | −0,05 |
-| O1 | 0,1039 | 83,22 | 0,1071 | 80,71 | **1,0316** | −0,18 |
+| Comp. | H Cananéia (m) | G Cananéia (°) | H Ubatuba (m) | G Ubatuba (°) | hrel (Can/Uba) | Defas. (min) |
+|-------|:--------------:|:--------------:|:-------------:|:-------------:|:--------------:|:------------:|
+| O1 | 0,1039 | 83,22 | 0,1071 | 80,71 | **0,969** | 10,8 |
+| K1 | 0,0575 | 140,79 | 0,0605 | 140,02 | **0,951** | 3,1 |
+| M2 | 0,3596 | 91,17 | 0,3101 | 77,84 | **1,160** | 27,6 |
+| S2 | 0,2418 | 97,81 | 0,1853 | 83,87 | **1,305** | 27,9 |
 
 ![Comparação de amplitudes M2, S2, K1, O1 — Cananéia vs Ubatuba](plot/q05_amplitudes_comp.png)
 
